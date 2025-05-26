@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - master
+    
+     workflow_dispatch: # Allows manual triggering of the workflow
 
 
 
@@ -27,4 +29,12 @@ jobs:
       - name: "Running on pull request"
         run: echo "Running on pull request"
 
+  on_workflow_dispatch:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Running on manual trigger"
+        run: echo "Running on manual trigger"
+      
+  
   
