@@ -13,4 +13,17 @@ jobs:
         run: echo "Hello World"
 
       - name: Print current date
-        run: date    
+        run: date  
+    
+  second_job:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Print mathematics
+          run: echo "mathematics is the language with which God has written the universe"
+
+        - name: Print current date
+          run: date  
+    
+        - name: Print current time
+          run: time
+        
