@@ -1,4 +1,5 @@
-name: "Multi event pipline workflow"
+name: "Multi_Event_Pipeline"
+description: "A pipeline that runs on multiple events: push, pull_request, and manual trigger"
 on:
   push:
     branches:
