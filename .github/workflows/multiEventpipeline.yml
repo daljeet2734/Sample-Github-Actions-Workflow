@@ -4,6 +4,9 @@ on:
     branches:
       - master
       - test
+
+jobs:
+  hey_pipeline:
   pull_request:
     branches:
       - master
@@ -21,7 +24,8 @@ jobs:
         run: echo "Running on master or test branch push"
 
       - name: Print current date
-        run: date  
+        run: date
+        
   on-pull_request:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -36,5 +40,3 @@ jobs:
       - name: "Running on manual trigger"
         run: echo "Running on manual trigger"
       
-  
-  
