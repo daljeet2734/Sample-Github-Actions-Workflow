@@ -1,43 +1,60 @@
-name: "Multi_Event_Pipeline"
-description: "A pipeline that runs on multiple events: push, pull_request, and manual trigger"
-on:
-  push:
-    branches:
-      - master
-      - test
 
-jobs:
-  hey_pipeline:
-  pull_request:
-    branches:
-      - master
+name: "Multi event pipeline / workflow" # Name of the pipeline
+on: 
+    push: # Event: Whenever a push is made to the repository on the master / test branch
+        branches:
+            - master
+            - test
+    schedule:
+        - cron: "0 10 * * 2,4"
+    pull_request: # Event: Whenever a pull request is made to the repository
+        branches:
+            - master 
+        types:
+            - closed
+            - opened
+    workflow_dispatch: 
     
-     workflow_dispatch: # Allows manual triggering of the workflow
-
-
-
 jobs:
-  hey_pipeline:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Running on master / test push"
-        run: echo "Running on master or test branch push"
+    on-push: # Job 1
+        if: github.event_name == 'push' 
+        runs-on: ubuntu-latest
+        steps: # Steps to be executed in the job
+            - name: "Running on master/test push" # Step 1
+              run: echo "Running on master/test push"
 
-      - name: Print current date
-        run: date
-        
-  on-pull_request:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Running on pull request"
-        run: echo "Running on pull request"
+    on-pull-request: # Job 2
+        if: github.event_name == 'pull_request'
+        runs-on: ubuntu-latest
+        steps: # Steps to be executed in the job
+            - name: "Running on pull request" # Step 1
+              run: echo "Running on pull request"
 
-  on_workflow_dispatch:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Running on manual trigger"
-        run: echo "Running on manual trigger"
-      
+    on-pull-request-opened:
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Running on pull request opened"
+              run: echo "Running on pull request opened"
+    
+    on-pull-request-closed:
+        if: github.event_name == 'pull_request' && github.event.action == 'closed'
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Running on pull request closed"
+              run: echo "Running on pull request closed"
+
+    on-workflow-dispatch: # Job 3
+        if: github.event_name == 'workflow_dispatch'
+        runs-on: ubuntu-latest
+        steps: # Steps to be executed in the job
+            - name: "Running on workflow dispatch" # Step 1
+              run: echo "Running on workflow dispatch"
+
+    on-schedule: # Job 4
+        if: github.event_name == 'schedule'
+        runs-on: ubuntu-latest
+        steps: # Steps to be executed in the job
+            - name: "Running on schedule" # Step 1
+              run: echo "Running on schedule"
+    
